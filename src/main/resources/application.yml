@@ -1,0 +1,91 @@
+greeting:
+  message: "hello"
+
+quarkus:
+  datasource:
+    db-kind: h2
+    username: h2
+    password: h2
+    jdbc:
+      url: jdbc:h2:mem:test.db;DB_CLOSE_DELAY=-1
+  hibernate-orm:
+    database:
+      generation: drop-and-create
+  http:
+    port: 9210
+    non-application-root-path: /actuator
+  vertx:
+    worker-pool-size: 30000
+    max-worker-execute-time: 60000
+    queue-size: 3000
+    keep-alive-time: 60
+    event-loops-pool-size: 3000
+    eventbus:
+      accept-backlog: 400
+      idle-timeout: 60000
+      reconnect-attempts: 15
+      connect-timeout: 60
+      reconnect-interval: 15
+  application:
+    name: quarkus-camel-database
+    version: version1.0.0-1400/11/11
+  thread-pool:
+    keep-alive-time: 60
+    core-threads: 8
+    max-threads: 5000
+    queue-size: 5000
+  micrometer:
+    export:
+      prometheus:
+        path: ${quarkus.http.non-application-root-path}/prometheus
+        enabled: true
+  swagger-ui:
+    enable: true
+    path: /swagger
+    display-operation-id: true
+    display-request-duration: true
+    oauth2-redirect-url: http://localhost:9212/swagger
+    authorizationUrl: http://localhost:8080/auth/realms/saber66/protocol/openid-connect/auth
+    tokenUrl: http://localhost:8080/auth/realms/saber66/protocol/openid-connect/token
+    oauth-client-id: saber-client
+    oauth-client-secret: 73b6e1da-d0ef-474c-97ae-d1c4438a7535
+    oauth-realm: saber66
+    oauth-app-name: saber66
+    oauth-use-pkce-with-authorization-code-grant: true
+    oauth-scopes:
+      - "openid"
+    show-mutated-request: true
+
+    urls:
+      jaxrs: /services/camel-quarkus-database/v2/api-docs
+      camel: ${service.api.base-path}${service.api.swagger-path}
+
+  smallrye-openapi:
+    enable: true
+    path: /services/camel-quarkus-database/v2/api-docs
+    info-version: version1.0.0-1400/11/11
+    oauth2-implicit-token-url: http://localhost:8080/auth/realms/saber66/protocol/openid-connect/token
+    oauth2-implicit-authorization-url: http://localhost:8080/auth/realms/saber66/protocol/openid-connect/auth
+    security-scheme: oauth2-implicit
+    security-scheme-name: Keycloak
+    oauth2-redirect-url: http://localhost:9212/swagger
+  camel:
+    metrics:
+      enable-message-history: true
+      enable-route-policy: true
+      enable-route-event-notifier: true
+      enable-exchange-event-notifier: true
+    event-bridge:
+      enabled: true
+service:
+  api:
+    base-path: /services/camel-database
+    swagger-path: /v2/api-docs
+    swagger-title: camel quarkus database
+    swagger-version: version1.0.0-1400/11/11
+  log:
+    pretty-print: true
+
+  database:
+    query:
+      findall: select p from Person p
