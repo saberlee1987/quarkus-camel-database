@@ -9,6 +9,11 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "persons")
+@NamedQueries(
+		value = {
+				@NamedQuery(name = "findPersonByNationalCode",query = "select p from Person p where p.nationalCode=:nationalCode")
+		}
+)
 public class Person {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -21,7 +21,7 @@ public class SavePersonRoute extends AbstractRestRouteBuilder {
 		rest("/persons")
 				.post("/save")
 				.id(Routes.SAVE_PERSON_ROUTE_ID)
-				.responseMessage().code(200).responseModel(Person.class).endResponseMessage()
+				.responseMessage().code(200).responseModel(Person.class).example("example1","{\"firstName\": \"saber\",\"lastName\": \"azizi\",\"nationalCode\": \"0079028748\",\"age\": 35}").endResponseMessage()
 				.consumes(MediaType.APPLICATION_JSON)
 				.produces(MediaType.APPLICATION_JSON)
 				.enableCORS(true)
@@ -47,6 +47,7 @@ public class SavePersonRoute extends AbstractRestRouteBuilder {
 					
 					exchange.getIn().setBody(person);
 				})
+				.transacted()
 				.to("jpa:" + Person.class.getName())
 				.log("Response for add person to table ===> ${in.body}")
 				.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
